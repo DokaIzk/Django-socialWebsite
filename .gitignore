@@ -1,0 +1,9 @@
+.env
+
+my_env/
+
+db.sqlite3
+
+media/
+
+*.pyc
