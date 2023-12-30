@@ -2,9 +2,11 @@ from django import forms
 from django.contrib.auth.models import User
 from .models import Profile
 
-class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+# Don't Need This Since Using Default Auth Views
+# class LoginForm(forms.Form):
+    # username = forms.CharField()
+    # password = forms.CharField(widget=forms.PasswordInput)
+    
 
  
 class UserRegistrationForm(forms.ModelForm):
@@ -36,7 +38,7 @@ class UserEditForm(forms.ModelForm):
 
     def clean_email(self):
         data = self.cleaned_data['email']
-        qs = User.objects.exclude(id=self.instance.id).filter(emaill=data)
+        qs = User.objects.exclude(id=self.instance.id).filter(email=data)
 
         if qs.exists():
             raise forms.ValidationError('Email Is Already In Use.')

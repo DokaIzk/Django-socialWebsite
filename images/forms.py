@@ -21,6 +21,7 @@ class ImageCreateForm(forms.ModelForm):
         
         return url
     
+    # overrode the save method to download image file
     def save(self, force_insert=False, force_update=False, commit=True):
         image = super().save(commit=False)
         image_url = self.cleaned_data['url']

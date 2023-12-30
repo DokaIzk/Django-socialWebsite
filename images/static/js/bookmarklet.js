@@ -8,7 +8,7 @@ let head = document.getElementsByTagName('head')[0];
 let link = document.createElement('link');
 link.rel = 'stylesheet';
 link.type = 'text/css';
-link.href = styleURL + '?r=' + Math.floor(Math.random() * 9999999999999999);
+link.href = styleURL+'?r='+Math.floor(Math.random()*9999999999999999);
 head.appendChild(link);
 
 // Load HTML
@@ -39,7 +39,9 @@ const bookmarkletLaunch = () => {
 
 
     // find imaeges with the minimun dimensions
-    let images = document.querySelectorAll('img[src$=".jpg"], img[src$=".jpeg"], img[src$=".png"]');
+    let images = document.querySelectorAll(
+        'img[src$=".jpg"], img[src$=".jpeg"], img[src$=".png"]'
+        );
 
     images.forEach(image => {
         if (image.naturalHeight >= minHeight && image.naturalWidth >= minWidth) {
@@ -54,7 +56,9 @@ const bookmarkletLaunch = () => {
         image.addEventListener('click', (event) => {
             imageSelected = event.target;
             bookmarklet.style.display = 'none';
-            window.open(siteUrl + 'images/create-image/?url=' + encodeURIComponent(imageSelected.src) + '&title=' + encodeURIComponent(document.title), '_blank');
+            window.open(siteUrl + 'images/create-image/?url=' + 
+            encodeURIComponent(imageSelected.src) + '&title=' + 
+            encodeURIComponent(document.title), '_blank');
         });
     });
 };

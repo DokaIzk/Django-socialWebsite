@@ -13,12 +13,23 @@
     {% endwith %}
 
     <p>
-        Drag the following button to your bookmarks toolbar to bookmark images from other websites  <a href="javascript:{% include 'bookmarklet_launcher.js' %}" class="button">Bookmark It</a>
+        Drag the following button to your 
+        bookmarks toolbar to bookmark images from other 
+        websites  
+        <a href="javascript:{% include 'bookmarklet_launcher.js' %}" class="button">Bookmark It</a>
     </p>
 
     <p>
         You Can Also <a href="{% url 'edit' %}">edit Your Profile</a> or 
         <a href="{% url 'password_change' %}">Change Your Password.</a>
     </p>
+
+    <h2>What's Happening</h2>
+    
+    <div id="action-list">
+        {% for action in actions %}
+            {% include "actions/action/detail.html" %}
+        {% endfor %}
+    </div>
 
 {% endblock %} 

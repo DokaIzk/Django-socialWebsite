@@ -242,11 +242,11 @@ a.like, a.follow { float:right; margin-top:-8px; }
     width:180px;
     height:180px;
     border-radius:50%;
-    margin-bottom:20px;
+    margin-bottom:20px; 
 }
 #people-list .user {
-    width:180px;
-    float:left;
+    width:190px;
+    float:left; 
     overflow:auto;
     padding:10px;
 }
@@ -258,6 +258,7 @@ img.user-detail {
 .profile-info {
     float:left;
     overflow:auto;
+    border-radius: 50%;
     margin-right:20px;
 }
 .image-container { margin-top:40px; }

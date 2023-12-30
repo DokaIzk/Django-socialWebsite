@@ -1,3 +1,4 @@
+# import redis
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -7,15 +8,23 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
+from actions.utils import create_action
+from django.conf import settings
+
+#Connect To Redis
+# r = redis.Redis(
+#     host=settings.REDIS_HOST,
+#     port=settings.REDIS_PORT,
+#     db=settings.REDIS_DB
+# )
 
 # Create your views here.
 @login_required
 def image_create(request):
     form = ImageCreateForm()
     if request.method == 'POST':
-         
         form = ImageCreateForm(data=request.POST)
-
+        
         if form.is_valid():
             cleanData = form.cleaned_data
             new_image =form.save(commit=False)
@@ -23,6 +32,9 @@ def image_create(request):
             # the item is assigned to the current user
             new_image.user = request.user
             new_image.save()
+
+            # Added the create action shortcut
+            create_action(request.user, 'Bookmarked Image', new_image)
 
             messages.success(request, 'Image Added Successfully')
 
@@ -40,7 +52,13 @@ def image_create(request):
 def image_detail(request , id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
 
-    return render(request, 'images/image/detail.html', {'section':'images','image':image})
+    #increment total views by 1
+    # total_views = r.incr(f'image:{image.id}:views')
+    # 'total_views':total_views
+
+    return render(request, 'images/image/detail.html', 
+                  {'section':'images','image':image})
+
 
 
 @login_required
@@ -55,6 +73,8 @@ def image_like(request):
 
             if action == 'like':
                 image.users_like.add(request.user)
+
+                create_action(request.user, 'Liked', image)
 
             else:
                 image.users_like.remove(request.user)
@@ -91,3 +111,4 @@ def image_list(request):
         return render(request, 'images/image/list_images.html', context)
     
     return render(request, 'images/image/list.html', context)
+

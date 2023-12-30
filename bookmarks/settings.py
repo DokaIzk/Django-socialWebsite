@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'account',
     'images',
+    'actions',
     'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.contenttypes',
@@ -43,9 +45,11 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     'easy_thumbnails',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -144,7 +148,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'account.authentication.EmailAuthBackend',
     'social_core.backends.facebook.FacebookOAuth2',
-    # 'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.google.GoogleOAuth2',
 
 ]
@@ -171,8 +174,16 @@ SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.user.user_details',
 ]
 
-if DEBUG:
-    import mimetypes
-    mimetypes.add_type('application/javascript', '.js', True)
-    mimetypes.add_type('text/css', '.css', True)
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+}
     
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
